@@ -11,10 +11,11 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title> Users Page</title>
     </head>
+
     <body>
         <h1>Manage Users </h1>
 
-        Users <table border="1">
+        <strong>Users</strong><table border="1">
 
             <tr>
                 <td>Email</td>
@@ -40,12 +41,18 @@
 
         <h2>Add User</h2>
 
-        <form method="post" action="User">
+        <form method="post" action="user">
+
             Email: <input type="text" name="email"><br> 
             First Name:  <input type="text" name="firstname"><br>
             Last Name <input type="text" name="lastname"><br>  
-            Password:  <input type="text" name="password"><br>
+            Password:  <input type="password" name="password"><br>
+
+            <br>
+            <input type="submit" value="Add User">
         </form>
+
+        <p>${error}</p>
 
     </body>
 </html>
