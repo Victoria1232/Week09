@@ -23,6 +23,20 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        
+        /**
+         * GAME PLAN
+         * 
+         * get everything from our data base 
+         * create a bunch of user objects  using the result set containing all users in our db 
+         * add to array list 
+         * print out each one in jsp using jstl 
+         * 
+         * add edit feature 
+         * and add user feature 
+         * delete feature 
+         *
+         */
         ConnectionPool pool = ConnectionPool.getInstance(); // make a pool 
         Connection connection = pool.getConnection(); // get a connection object 
 
