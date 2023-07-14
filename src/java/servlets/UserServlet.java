@@ -8,11 +8,17 @@ package servlets;
 import data_access.ConnectionPool;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.User;
+import services.UserService;
 
 /**
  *
@@ -37,9 +43,41 @@ public class UserServlet extends HttpServlet {
          * delete feature 
          *
          */
-        ConnectionPool pool = ConnectionPool.getInstance(); // make a pool 
+        
+        UserService service = new UserService("hhh");
+        
+        
+     /*
+        try {
+            // get accounts returns an array of accounts 
+             List<User> users =  service.getAccounts();
+             // set users to be accounts in jsp 
+             request.setAttribute("accounts", users);
+             
+               ConnectionPool pool = ConnectionPool.getInstance(); // make a pool 
         Connection connection = pool.getConnection(); // get a connection object 
-
+        
+   ArrayList<User> usersArray = new ArrayList<>();
+        String sql = "SELECT * FROM user"; 
+        PreparedStatement ps = connection.prepareStatement(sql);
+        ResultSet users = ps.executedQuery();
+        users.close();
+        
+        while (users.next()) {
+            String email = users.getString(1);
+            String firstName = users.getString(2);
+            String lastName = users.getString(3);
+            String password = users.getString(4);
+            int role = users.getInt(5);
+           
+            
+    }
+        } catch (Exception e) {
+           System.out.println("Error occured");
+        }
+       
+        
+      
         pool.freeConnection(connection); // close the connection object 
 
         String edit = request.getParameter("edit");
@@ -53,6 +91,7 @@ public class UserServlet extends HttpServlet {
             // delete user 
         }
 
+*/
         getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
         return;
 

@@ -28,10 +28,7 @@
             </tr>
             <c:forEach items="${accounts}" var="account">
                 <tr>
-                    <td> User23@gmail.com </td>
-                    <td> james </td>
-                    <td> makey </td>
-                    <td> editor </td>
+                    <td>${account}</td>
                     <td><a href="account?edit">edit</a></td>
                     <td><a href="account?delete">delete</a></td>
                 </tr>

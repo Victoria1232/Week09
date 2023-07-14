@@ -5,10 +5,29 @@
  */
 package services;
 
+import data_access.UserDB;
+import java.util.List;
+import models.User;
+
 /**
  *
  * @author mfgperez
  */
 public class UserService {
     
+    private UserDB userDB;
+    private final String path;
+
+    public UserService(String path) {
+        this.path = path;
+    }
+    
+    
+      public List<User> getAccounts() throws Exception {
+          
+        userDB = new UserDB(path);
+        List<User> users = userDB.getAllUsers();
+        
+        return users;
+    }
 }
