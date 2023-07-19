@@ -27,7 +27,7 @@ public class ConnectionPool {
             InitialContext ic = new InitialContext(); // provides access to context.xml (retrives the values)
 
             // this data source is coming from context.xml resource 
-            dataSource = (DataSource) ic.lookup("java:/comp/env/jdbc/app"); // looking up component (comp) enviroment (env) variable is jdbc/app
+            dataSource = (DataSource) ic.lookup("java:/comp/env/jdbc/userdb"); // looking up component (comp) enviroment (env) variable is jdbc/app
 
         } catch (NamingException exception) {
             System.out.println(exception);

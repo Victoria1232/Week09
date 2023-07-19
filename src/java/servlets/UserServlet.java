@@ -6,12 +6,15 @@
 package servlets;
 
 import data_access.ConnectionPool;
+import data_access.UserDB;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -29,69 +32,43 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        
         /**
          * GAME PLAN
-         * 
-         * get everything from our data base 
-         * create a bunch of user objects  using the result set containing all users in our db 
-         * add to array list 
-         * print out each one in jsp using jstl 
-         * 
-         * add edit feature 
-         * and add user feature 
-         * delete feature 
+         *
+         * get everything from our data base create a bunch of user objects
+         * using the result set containing all users in our db add to array list
+         * print out each one in jsp using jstl
+         *
+         * add edit feature and add user feature delete feature
          *
          */
-        
-        UserService service = new UserService("hhh");
-        
-        
-     /*
+        // UserService service = new UserService("hhh");
+        UserDB userdb = new UserDB();
+
         try {
-            // get accounts returns an array of accounts 
-             List<User> users =  service.getAccounts();
-             // set users to be accounts in jsp 
-             request.setAttribute("accounts", users);
-             
-               ConnectionPool pool = ConnectionPool.getInstance(); // make a pool 
-        Connection connection = pool.getConnection(); // get a connection object 
-        
-   ArrayList<User> usersArray = new ArrayList<>();
-        String sql = "SELECT * FROM user"; 
-        PreparedStatement ps = connection.prepareStatement(sql);
-        ResultSet users = ps.executedQuery();
-        users.close();
-        
-        while (users.next()) {
-            String email = users.getString(1);
-            String firstName = users.getString(2);
-            String lastName = users.getString(3);
-            String password = users.getString(4);
-            int role = users.getInt(5);
-           
+            ArrayList<User> usersArray = userdb.getAllUsers();
             
-    }
-        } catch (Exception e) {
-           System.out.println("Error occured");
+
+            if (usersArray == null) {
+
+                request.setAttribute("error", "No users found, Please add user");
+            }
+            
+            request.setAttribute("accounts", usersArray);
+
+        } catch (Exception ex) {
+            Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex); // ???
         }
-       
-        
-      
-        pool.freeConnection(connection); // close the connection object 
 
         String edit = request.getParameter("edit");
         String delete = request.getParameter("delete");
-        
-        
+
         if (edit != null) {
             // go to edit mode 
-        }
-        else if (delete != null) {
+        } else if (delete != null) {
             // delete user 
         }
 
-*/
         getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
         return;
 
@@ -103,6 +80,7 @@ public class UserServlet extends HttpServlet {
         String firstName = request.getParameter("firstname");
         String lastName = request.getParameter("lastname");
         String password = request.getParameter("password");
+        String role =  request.getParameter("role");
 
         if (firstName == null || firstName.equalsIgnoreCase("") || lastName == null || lastName.equalsIgnoreCase("") || password == null || password.equalsIgnoreCase("")) {
 
@@ -110,7 +88,10 @@ public class UserServlet extends HttpServlet {
             getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
             return;
         }
+        // otherwise 
 
+        // add user
+        // delete users
         getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
         return;
 

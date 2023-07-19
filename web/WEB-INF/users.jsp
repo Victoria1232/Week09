@@ -15,6 +15,9 @@
     <body>
         <h1>Manage Users </h1>
 
+        
+        <p>${error}</p>
+        <br>
         <strong>Users</strong><table border="1">
 
             <tr>
@@ -49,7 +52,7 @@
             <input type="submit" value="Add User">
         </form>
 
-        <p>${error}</p>
+        
 
     </body>
 </html>

@@ -16,16 +16,16 @@ import models.User;
 public class UserService {
     
     private UserDB userDB;
-    private final String path;
+  
 
-    public UserService(String path) {
-        this.path = path;
+    public UserService() {
+       
     }
     
     
       public List<User> getAccounts() throws Exception {
           
-        userDB = new UserDB(path);
+      //  userDB = new UserDB(path);
         List<User> users = userDB.getAllUsers();
         
         return users;
