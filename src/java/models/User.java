@@ -19,24 +19,50 @@ public class User implements Serializable {
     private String password;
     private Role role;
     private int roleID;
+    private String roleName;
 
-    public User(String email, String firstName, String lastName, String roleName) {
+    public User(String email, String firstName, String lastName, String password , String roleName) {
 
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.roleName = roleName;
+        this.password = password; 
         role = new Role(1, roleName);
 
     }
 
-    public User(String email, String firstName, String lastName, int roleID) {
+    public User(String email, String firstName, String lastName, int roleID)  throws InvalidArgumentException{
+
+        
+        if (roleID == 1) {
+            this.roleName = "System Admin"; 
+            this.roleID = roleID;
+        }
+        else if (roleID == 2) {
+             this.roleName = "Regular User"; 
+               this.roleID = roleID;
+        }
+        else {
+            throw new InvalidArgumentException();
+        }
+       
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+      
+
+    }
+
+    public User(String email, String firstName, String lastName) {
 
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.roleID = roleID;
 
     }
+
+   
 
     public String toString() {
 

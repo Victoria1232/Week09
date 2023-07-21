@@ -6,6 +6,7 @@
 package services;
 
 import data_access.UserDB;
+import java.util.ArrayList;
 import java.util.List;
 import models.User;
 
@@ -14,20 +15,31 @@ import models.User;
  * @author mfgperez
  */
 public class UserService {
-    
-    private UserDB userDB;
-  
+
+    private final UserDB USER_DB = new UserDB();
 
     public UserService() {
-       
+
     }
-    
-    
-      public List<User> getAccounts() throws Exception {
-          
-      //  userDB = new UserDB(path);
-        List<User> users = userDB.getAllUsers();
-        
+
+    public ArrayList<User> getAll() throws Exception {
+
+        ArrayList<User> users = USER_DB.getAllUsers();
         return users;
+    }
+
+    public void insert(User user) throws Exception {
+
+        USER_DB.insert(user);
+    }
+
+    public void update(User user) throws Exception {
+
+        USER_DB.update(user);
+    }
+
+    public void delete(User user) throws Exception {
+
+        USER_DB.delete(user);
     }
 }

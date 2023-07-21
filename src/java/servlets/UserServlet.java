@@ -43,10 +43,11 @@ public class UserServlet extends HttpServlet {
          *
          */
         // UserService service = new UserService("hhh");
-        UserDB userdb = new UserDB();
+        //UserDB userdb = new UserDB();
+        UserService userService = new UserService();
 
         try {
-            ArrayList<User> usersArray = userdb.getAllUsers();
+            ArrayList<User> usersArray = userService.getAll();
             
 
             if (usersArray == null) {
@@ -76,7 +77,9 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+ 
+        UserService userService = new UserService();
+        String email = request.getParameter("email");
         String firstName = request.getParameter("firstname");
         String lastName = request.getParameter("lastname");
         String password = request.getParameter("password");
@@ -91,6 +94,12 @@ public class UserServlet extends HttpServlet {
         // otherwise 
 
         // add user
+        User newUser = new User(email , firstName , lastName, password , role);
+        try {
+            userService.insert(newUser);
+        } catch (Exception ex) {
+            Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
         // delete users
         getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
         return;

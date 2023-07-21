@@ -13,7 +13,7 @@ import models.User;
  */
 public class UserDB {
 
-    private String path;
+
     private DBUtil dbUtility = new DBUtil();
 
     public UserDB() {
@@ -41,9 +41,9 @@ public class UserDB {
                 String firstName = rs.getString(2);
                 String lastName = rs.getString(3);
                 //String role = rs.getString(4);
-                int role = rs.getInt(4);
+                //int role = rs.getInt(4);
 
-                User user = new User(email, firstName, lastName, role);
+                User user = new User(email, firstName, lastName);
                 users.add(user);
             }
         } finally {
@@ -73,7 +73,8 @@ public class UserDB {
                 String email = rs.getString(1);
                 String firstName = rs.getString(2);
                 String lastName = rs.getString(3);
-                String roleName = rs.getString(4);
+                //String roleName = rs.getString(4);
+                  int roleName = rs.getInt(4);
 
                 user = new User(email, firstName, lastName, roleName);
 
