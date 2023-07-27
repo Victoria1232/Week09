@@ -22,45 +22,76 @@
         <strong>Users</strong><table border="1">
 
             <tr>
-                <td>Email</td>
-                <td>First Name</td>
-                <td>Last Name</td>
-                <td>Role</td>
+                <td> Email</td>
+                <td> First Name</td>
+                <td> Last Name</td>
+                <td> Role</td>
                 <td>Edit</td>
                 <td>Delete</td>
 
             </tr>
-            <c:forEach items="${accounts}" var="account">
+            <c:forEach items="${users}" var="user">
                 <tr>
-                    <td>${account.email}</td>
-                    <td>${account.firstName}</td>
-                    <td>${account.lastName}</td>
-        
-                    <td><a href="account?edit">edit</a></td>
-                    <td><a href="account?delete">delete</a></td>
+                    <td>${user.email}</td>
+                    <td>${user.firstName}</td>
+                    <td>${user.lastName}</td>
+
+                    <td><a href="/?action=edit&amp;user_name=${user.firstName}">edit</a></td>
+                    <td><a href="/?action=delete&amp;user_name=${user.firstName}">delete</a></td>
                 </tr>
 
             </c:forEach>
         </table>
 
-        <h2>Add User</h2>
+        <br>
+        <p>${message}</p>
 
-        <form method="post" action="user">
 
-            Email: <input type="text" name="email"><br> 
+        <c:if test="${selectedUser eq null}">
+
+            <h2>Edit User</h2>
+            <form action="user" method="post">
+                
+                <p>${selectedUser.email}</p>
+                First Name:  <input type="text" name="firstname"><br>
+                Last Name <input type="text" name="lastname"><br>  
+                Password:  <input type="text" name="password"><br>
+
+                <select name="roles">
+                    <option name="admin" value="1">System Admin</option>
+                    <option value="reg_user">Regular User</option>
+                </select><br>
+                <br>
+
+                <input type="hidden" name="action" value="update">
+                <input type="submit" value="Update">
+            </form>
+        </c:if>
+
+
+        <br>
+        
+        
+
+        <h2>${header2value}</h2>
+        <form action="user" method="post">
+
+            <input hidden type="text" name="email" value="${users_email}"><br> 
+
+            Email: <input  type="text" name="email"><br> 
             First Name:  <input type="text" name="firstname"><br>
             Last Name <input type="text" name="lastname"><br>  
-            Password:  <input type="password" name="password"><br>
+            Password:  <input type="text" name="password"><br>
 
-        
-            <select id="role">
-                <option value="admin">System Admin</option>
-                <option value="reguser">Regular User</option>
+
+
+            <select name="roles">
+                <option name="admin" value="1">System Admin</option>
+                <option value="reg_user">Regular User</option>
             </select><br>
-
             <br>
-            
-            <input type="submit" value="Add User">
+
+            <input type="submit" value="${submitvalue}">
         </form>
 
 

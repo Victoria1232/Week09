@@ -7,7 +7,7 @@ package services;
 
 import data_access.UserDB;
 import java.util.ArrayList;
-import java.util.List;
+
 import models.User;
 
 /**
@@ -33,6 +33,10 @@ public class UserService {
         USER_DB.insert(user);
     }
 
+        public User getUserByName(String userName) throws Exception {
+
+        return USER_DB.getUserName(userName);
+    }
     public void update(User user) throws Exception {
 
         USER_DB.update(user);

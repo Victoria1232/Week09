@@ -5,6 +5,12 @@
  */
 package data_access;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import models.Role;
+
 /**
  *
  * @author mfgperez
@@ -12,18 +18,24 @@ package data_access;
 public class RoleDB {
     
     
+    Role role; 
     
-    
-    
-    public ArrayList<User> getAllUsers() throws Exception {
+    public RoleDB() {
+    }
+    // return an array of role objects 
+    // then use role service 
+    // then get role service then call method to get role name then add it to user 
+    // 
 
-        ArrayList<User> users = new ArrayList<>();
+    public ArrayList<Role> getAllRoles() throws Exception {
+
+        ArrayList<Role> roles = new ArrayList<>();
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection con = cp.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
 
-        String sql = "SELECT * FROM user"; 
+        String sql = "SELECT * FROM role"; 
 
         try {
             ps = con.prepareStatement(sql);
@@ -32,14 +44,13 @@ public class RoleDB {
 
             while (rs.next()) {
 
-                String email = rs.getString(1);
-                String firstName = rs.getString(2);
-                String lastName = rs.getString(3);
-                //String role = rs.getString(4);
-                //int role = rs.getInt(4);
+                int roleID = rs.getInt(1);
+                String roleName = rs.getString(2);
+               
+       
 
-                User user = new User(email, firstName, lastName);
-                users.add(user);
+                 role = new Role(roleID , roleName);
+                roles.add(role);
             }
         } finally {
             DBUtil.closePreparedStatement(ps); // equivalent to ps.close()
@@ -47,6 +58,13 @@ public class RoleDB {
             cp.freeConnection(con);
         }
 
-        return users;
+        return roles;
     }
+    
+   
+    
+    
+    
+    
+    
 }

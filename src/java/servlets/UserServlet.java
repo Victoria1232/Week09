@@ -1,18 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package servlets;
 
-import data_access.ConnectionPool;
-import data_access.UserDB;
+
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+
 import java.util.ArrayList;
-import java.util.List;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -32,59 +25,105 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        /**
-         * GAME PLAN
-         *
-         * get everything from our data base create a bunch of user objects
-         * using the result set containing all users in our db add to array list
-         * print out each one in jsp using jstl
-         *
-         * add edit feature and add user feature delete feature
-         *
-         */
-        // UserService service = new UserService("hhh");
-        //UserDB userdb = new UserDB();
+        
+
         UserService userService = new UserService();
 
         try {
             ArrayList<User> usersArray = userService.getAll();
-            
 
             if (usersArray == null) {
 
                 request.setAttribute("error", "No users found, Please add user");
             }
-            
-            request.setAttribute("accounts", usersArray);
+
+            request.setAttribute("users", usersArray);
 
         } catch (Exception ex) {
             Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex); // ???
         }
 
-        String edit = request.getParameter("edit");
-        String delete = request.getParameter("delete");
+       // String edit = request.getParameter("edit");
+       // String delete = request.getParameter("delete");
 
+        String action = request.getParameter("action");
+        if (action != null && action.equals("edit")) {
+        
+            String userName = request.getParameter("user_name");
+            try {
+                User user = userService.getUserByName(userName);
+                 request.setAttribute("selectedUser", user);
+            } catch (Exception ex) {
+                Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+              request.setAttribute("header2value", "Edit");
+              request.setAttribute("submitvalue", "Update");
+                
+            getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
+            return;
+
+        }
+        
+               if (action != null && action.equals("delete")) {
+        
+            String userName = request.getParameter("user_name");
+            try {
+                User user = userService.getUserByName(userName);
+                 userService.delete(user);
+                  ArrayList<User> usersArray = userService.getAll(); // get users again to get the new user 
+             request.setAttribute("users", usersArray); // send to users 
+            } catch (Exception ex) {
+                Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+             
+              request.setAttribute("message", "Deleted user " + userName);
+                
+            getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
+            return;
+
+        }
+        
+        /*
         if (edit != null) {
             // go to edit mode 
+            // or set all values in the table to change to the edit version
+
+                request.setAttribute("header2value", "Edit");
+                request.setAttribute("submitvalue", "Update");
+                
+            getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
+            return;
+
         } else if (delete != null) {
             // delete user 
+            // userService.delete(user);
+            getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
+            return;
         }
+        */
+
+
+        request.setAttribute("header2value", "Add User");
+        request.setAttribute("submitvalue", "Add User");
 
         getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
         return;
-
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
- 
+
         UserService userService = new UserService();
         String email = request.getParameter("email");
         String firstName = request.getParameter("firstname");
         String lastName = request.getParameter("lastname");
         String password = request.getParameter("password");
-        String role =  request.getParameter("role");
-
+        String role = request.getParameter("");
+        String submitButton = request.getParameter("submitvalue");
+        String action = request.getParameter("action");
+       
+       
+       // if not filled out
         if (firstName == null || firstName.equalsIgnoreCase("") || lastName == null || lastName.equalsIgnoreCase("") || password == null || password.equalsIgnoreCase("")) {
 
             request.setAttribute("error", "All fields are required");
@@ -92,15 +131,52 @@ public class UserServlet extends HttpServlet {
             return;
         }
         // otherwise 
+        
+        // create new user 
+        User newUser = new User(email, firstName, lastName, password, 1);
+        
+        
+        try {
+            switch (action) {
+                case "delete":
+                    userService.delete(newUser);
+                    break;
+                case "update":
+                    userService.update(newUser);
+                    break;
+                
+            }
+            request.setAttribute("message", action);
+        } catch (Exception ex) {
+            Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+            request.setAttribute("message", "error");
+        }
 
-        // add user
-        User newUser = new User(email , firstName , lastName, password , role);
+        
+        
+        // get role 
+
+        
+        //User newUser = new User(email, firstName, lastName, password, role);
         try {
             userService.insert(newUser);
+            
+            ArrayList<User> usersArray = userService.getAll(); // get users again to get the new user 
+             request.setAttribute("users", usersArray); // send to users 
         } catch (Exception ex) {
             Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-        // delete users
+ 
+     /*
+        if (submitButton.equalsIgnoreCase("Update")) {
+            try {
+                // update user
+                userService.update(newUser);
+            } catch (Exception ex) {
+                Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        */
         getServletContext().getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
         return;
 

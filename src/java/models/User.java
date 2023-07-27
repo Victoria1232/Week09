@@ -13,26 +13,74 @@ import java.io.Serializable;
  */
 public class User implements Serializable {
 
+    private String roleName;
     private String email;
     private String firstName;
     private String lastName;
     private String password;
     private Role role;
     private int roleID;
-    private String roleName;
+   
+    
+    
+    
+    public User(String email, String firstName, String lastName) {
 
-    public User(String email, String firstName, String lastName, String password , String roleName) {
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+   
+ 
+    }
+
+    public User(String email, String firstName, String lastName , String roleName) {
+
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.roleName = roleName;
+       
+      
+
+    }
+        public User(String email, String firstName, String lastName , String password , String roleName) {
 
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         this.roleName = roleName;
         this.password = password; 
-        role = new Role(1, roleName);
+      
 
     }
 
-    public User(String email, String firstName, String lastName, int roleID)  throws InvalidArgumentException{
+              public User(String email, String firstName, String lastName, String password , int role) {
+
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        //this.roleName = roleName;
+        this.password = password; 
+        roleID = role;
+      
+
+    }
+              
+         public User(String email, String firstName, String lastName, Role role) {
+
+        this.email = email;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        //this.roleName = roleName;
+        //this.password = password; 
+       this.role = role; 
+       this.roleName = role.getRoleName(); 
+      
+
+    }
+
+        /*
+    public User(String email, String firstName, String lastName, String password ,  int roleID)  throws InvalidArgumentException{
 
         
         if (roleID == 1) {
@@ -50,17 +98,12 @@ public class User implements Serializable {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.password = password; 
       
 
     }
 
-    public User(String email, String firstName, String lastName) {
-
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-
-    }
+*/
 
    
 
@@ -85,6 +128,8 @@ public class User implements Serializable {
         return password;
     }
 
+    
+
     public String getRoleName() {
         return role.getRoleName();
     }
@@ -93,4 +138,8 @@ public class User implements Serializable {
         return role.getRoleID();
     }
 
+
+    
+    
+    
 }

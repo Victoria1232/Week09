@@ -5,14 +5,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import models.Role;
 import models.User;
+import services.RoleService;
 
 /**
  *
  * @author mfgperez
  */
 public class UserDB {
-
 
     private DBUtil dbUtility = new DBUtil();
 
@@ -22,13 +23,18 @@ public class UserDB {
 
     public ArrayList<User> getAllUsers() throws Exception {
 
+        // Role roleObj = null; 
+        RoleService roleService = new RoleService();
         ArrayList<User> users = new ArrayList<>();
+         ArrayList<Role> roles = new ArrayList<>();
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection con = cp.getConnection();
         PreparedStatement ps = null;
         ResultSet rs = null;
 
-        String sql = "SELECT * FROM user"; 
+        String sql = "SELECT * FROM user";
+      // roles =  roleService.getAll();
+      // int index =  0; 
 
         try {
             ps = con.prepareStatement(sql);
@@ -40,11 +46,31 @@ public class UserDB {
                 String email = rs.getString(1);
                 String firstName = rs.getString(2);
                 String lastName = rs.getString(3);
-                //String role = rs.getString(4);
-                //int role = rs.getInt(4);
+              //  String password = rs.getString(4);
+               // int roleID = rs.getInt(5);
+  
+               /*
+                String roleName = "";
 
-                User user = new User(email, firstName, lastName);
+                if (role == 1) {
+                    roleName = "System Admin";
+                    // roleObj = new Role(1, roleName);
+                   
+
+                } else if (role == 2) {
+                    roleName = "Regular User";
+                    //roleObj = new Role(2, roleName);
+                 
+                }
+
+*/
+           
+                 //User user = new User(email, firstName, lastName, roles.get(index));
+                 User user = new User(email, firstName, lastName);
+               // User user = new User(email, firstName, lastName,  roles.get(index).getRoleName());
+               // User user = new User(email, firstName, lastName, roles.get(index));
                 users.add(user);
+               // index++; 
             }
         } finally {
             DBUtil.closePreparedStatement(ps); // equivalent to ps.close()
@@ -74,10 +100,44 @@ public class UserDB {
                 String firstName = rs.getString(2);
                 String lastName = rs.getString(3);
                 //String roleName = rs.getString(4);
-                  int roleName = rs.getInt(4);
+                int roleName = rs.getInt(4);
 
-                user = new User(email, firstName, lastName, roleName);
+                //  user = new User(email, firstName, lastName, roleName);
+            }
+        } finally {
 
+            DBUtil.closePreparedStatement(ps);
+            DBUtil.closeResultSet(rs);
+            cp.freeConnection(con);
+        }
+
+        return user;
+    }
+    
+    public User getUserName(String userName) throws Exception {
+
+        User user = null;
+        ConnectionPool cp = ConnectionPool.getInstance();
+        Connection con = cp.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String sql = "SELECT * FROM user WHERE first_name=?";
+
+        try {
+            ps = con.prepareStatement(sql);
+           
+            ps.setString(1, userName);
+            rs = ps.executeQuery();
+            
+            if (rs.next()) {
+
+                String email = rs.getString(1);
+                String firstName = rs.getString(2);
+                String lastName = rs.getString(3);
+                //String roleName = rs.getString(4);
+                int roleName = rs.getInt(4);
+
+                 user = new User(email, firstName, lastName);
             }
         } finally {
 
@@ -89,11 +149,13 @@ public class UserDB {
         return user;
     }
 
+
     public void insert(User user) throws Exception {
 
         ConnectionPool cp = ConnectionPool.getInstance();
         Connection con = cp.getConnection();
         PreparedStatement ps = null;
+       // String sql = "INSERT INTO user (email, first_name, last_name , password) VALUES (?, ?, ?, ?)";
         String sql = "INSERT INTO user (email, first_name, last_name , password, role) VALUES (?, ?, ?, ?, ?)";
 
         try {
@@ -102,7 +164,8 @@ public class UserDB {
             ps.setString(2, user.getFirstName());
             ps.setString(3, user.getLastName());
             ps.setString(4, user.getPassword());
-            ps.setString(5, user.getRoleName());
+          //  ps.setString(5, user.getRoleName());
+           ps.setInt(4, user.getRoleID());
             ps.executeUpdate();
         } finally {
             DBUtil.closePreparedStatement(ps);
