@@ -33,14 +33,11 @@ public class UserService {
         USER_DB.insert(user);
     }
 
-    public User getUserByName(String userName) throws Exception {
 
-        return USER_DB.getUserName(userName);
-    }
 
-    public void update(User user) throws Exception {
+    public void update(User user, String firstName) throws Exception {
 
-        USER_DB.update(user);
+        USER_DB.update(user , firstName);
     }
 
     public void delete(User user) throws Exception {

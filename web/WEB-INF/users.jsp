@@ -35,10 +35,12 @@
                     <td>${user.email}</td>
                     <td>${user.firstName}</td>
                     <td>${user.lastName}</td>
+                    
+                    
 
 <!--  <td><a href="/?action=edit&amp;user_name=${user.firstName}">edit</a></td> -->
                     <td><a href="/?action=edit_link&amp;users_email=${user.email}&amp;user_name=${user.firstName}">edit</a></td>
-                    <td><a href="/?action=delete&amp;user_name=${user.firstName}" name="${user.firstName}">delete</a></td>
+                    <td><a href="/?action=delete&amp;user_first_name=${user.firstName}&amp;user_last_name=${user.lastName}" >delete</a></td>
                 </tr>
 
             </c:forEach>
@@ -71,7 +73,7 @@
                     <br>
 
                     <input type="hidden" name="action" value="edit">
-                    <input type="submit" value="Edit User">
+                    <input type="submit" name="submit_edits_button" value="Edit User"><input type="submit" name="cancel_button" value="Cancel">
                 </form>
                 <p>${error}</p>
 
@@ -93,7 +95,7 @@
                     <br>
 
                     <input type="hidden" name="action" value="add">
-                    <input type="submit" value="Add User">
+                    <input type="submit" name="add_user_button" value="Add User">
                 </form>
                 <p>${error}</p>
             </c:otherwise>
