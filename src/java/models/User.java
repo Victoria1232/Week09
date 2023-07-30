@@ -13,13 +13,13 @@ import java.io.Serializable;
  */
 public class User implements Serializable {
 
-    private String roleName;
+    private String roleName="";
     private String email;
     private String firstName;
     private String lastName;
     private String password;
     private Role role;
-    private int roleID;
+    private int roleID= 0;
    
     
     
@@ -33,16 +33,7 @@ public class User implements Serializable {
  
     }
 
-    public User(String email, String firstName, String lastName , String roleName) {
-
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.roleName = roleName;
-       
-      
-
-    }
+    
         public User(String email, String firstName, String lastName , String password , String roleName) {
 
         this.email = email;
@@ -66,13 +57,13 @@ public class User implements Serializable {
 
     }
               
-         public User(String email, String firstName, String lastName, Role role) {
+         public User(String email, String firstName, String lastName, String password,  Role role) {
 
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
         //this.roleName = roleName;
-        //this.password = password; 
+       this.password = password; 
        this.role = role; 
        this.roleName = role.getRoleName(); 
       

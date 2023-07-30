@@ -17,7 +17,7 @@
         <h1>Manage Users </h1>
 
 
-        <p>${error}</p>
+
         <br>
         <strong>Users</strong><table border="1">
 
@@ -36,8 +36,9 @@
                     <td>${user.firstName}</td>
                     <td>${user.lastName}</td>
 
-                    <td><a href="/?action=edit&amp;user_name=${user.firstName}">edit</a></td>
-                    <td><a href="/?action=delete&amp;user_name=${user.firstName}">delete</a></td>
+<!--  <td><a href="/?action=edit&amp;user_name=${user.firstName}">edit</a></td> -->
+                    <td><a href="/?action=edit_link&amp;users_email=${user.email}&amp;user_name=${user.firstName}">edit</a></td>
+                    <td><a href="/?action=delete&amp;user_name=${user.firstName}" name="${user.firstName}">delete</a></td>
                 </tr>
 
             </c:forEach>
@@ -47,54 +48,75 @@
         <p>${message}</p>
 
 
-        <c:if test="${selectedUser eq null}">
 
-            <h2>Edit User</h2>
-            <form action="user" method="post">
-                
-                <p>${selectedUser.email}</p>
-                First Name:  <input type="text" name="firstname"><br>
-                Last Name <input type="text" name="lastname"><br>  
-                Password:  <input type="text" name="password"><br>
 
-                <select name="roles">
-                    <option name="admin" value="1">System Admin</option>
-                    <option value="reg_user">Regular User</option>
-                </select><br>
-                <br>
 
-                <input type="hidden" name="action" value="update">
-                <input type="submit" value="Update">
-            </form>
-        </c:if>
+
+        <c:choose>
+            <c:when test="${edit_table == true}">
+
+                <h2>Edit User</h2>
+                <form action="user" method="post">
+
+
+                    <p>${email}</p>
+                    First Name:  <input type="text" name="firstname"><br>
+                    Last Name <input type="text" name="lastname"><br>  
+                    Password:  <input type="text" name="password"><br>
+
+                    <select name="roles">
+                        <option name="admin" value="1">System Admin</option>
+                        <option value="reg_user">Regular User</option>
+                    </select><br>
+                    <br>
+
+                    <input type="hidden" name="action" value="edit">
+                    <input type="submit" value="Edit User">
+                </form>
+                <p>${error}</p>
+
+            </c:when>    
+            <c:otherwise>
+                <h2>Add User</h2>
+                <form action="user" method="post">
+
+
+                    Email: <input  type="text" name="email" value="${email}"><br> 
+                    First Name:  <input type="text" name="firstname"><br>
+                    Last Name <input type="text" name="lastname"><br>  
+                    Password:  <input type="text" name="password"><br>
+
+                    <select name="roles">
+                        <option name="admin" value="1">System Admin</option>
+                        <option value="reg_user">Regular User</option>
+                    </select><br>
+                    <br>
+
+                    <input type="hidden" name="action" value="add">
+                    <input type="submit" value="Add User">
+                </form>
+                <p>${error}</p>
+            </c:otherwise>
+        </c:choose>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         <br>
-        
-        
-
-        <h2>${header2value}</h2>
-        <form action="user" method="post">
-
-            <input hidden type="text" name="email" value="${users_email}"><br> 
-
-            Email: <input  type="text" name="email"><br> 
-            First Name:  <input type="text" name="firstname"><br>
-            Last Name <input type="text" name="lastname"><br>  
-            Password:  <input type="text" name="password"><br>
-
-
-
-            <select name="roles">
-                <option name="admin" value="1">System Admin</option>
-                <option value="reg_user">Regular User</option>
-            </select><br>
-            <br>
-
-            <input type="submit" value="${submitvalue}">
-        </form>
-
-
 
     </body>
 </html>
