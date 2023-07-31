@@ -11,7 +11,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.Role;
 import models.User;
+import services.RoleService;
 import services.UserService;
 
 /**
@@ -25,11 +27,13 @@ public class UserServlet extends HttpServlet {
 
         /* VARIABLES  */
         UserService userService = new UserService();
+        RoleService roleService = new RoleService();
         String action = request.getParameter("action");
 
         /* GET ALL USERS  */
         try {
             ArrayList<User> usersArray = userService.getAll();
+             ArrayList<Role> rolesArray = roleService.getAll();
 
             /* IF NULL THROW ERROR MSG */
             if (usersArray == null) {
@@ -39,6 +43,7 @@ public class UserServlet extends HttpServlet {
 
             /* OTHERWISE ADD ARRAY TO USERS IN JSP  */
             request.setAttribute("users", usersArray);
+            request.setAttribute("roles", rolesArray);
 
         } catch (Exception ex) {
             Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex); // ???
@@ -62,6 +67,7 @@ public class UserServlet extends HttpServlet {
             String userLastName = request.getParameter("user_last_name");
             try {
                 userService.delete(userFirstName); // delete that user 
+             
                 ArrayList<User> usersArray = userService.getAll(); // get users again to get the updated table  
                 request.setAttribute("users", usersArray); // send to users 
             } catch (Exception ex) {
@@ -88,6 +94,7 @@ public class UserServlet extends HttpServlet {
         String firstName = request.getParameter("firstname");
         String lastName = request.getParameter("lastname");
         String password = request.getParameter("password");
+        String role = request.getParameter("roles");
 
         //String action = request.getParameter("action");
         String cancelButton = request.getParameter("cancel_button");
@@ -113,8 +120,9 @@ public class UserServlet extends HttpServlet {
 
         }
         /* CREATE USER  */
-        User newUser = new User(email, firstName, lastName, password, 1);
-
+  
+         User newUser = new User(email, firstName, lastName, password, 2);
+         
         /* IF CANCEL BUTTON IS PRESSED  */
         if ("Cancel".equalsIgnoreCase(cancelButton)) {
             request.setAttribute("edit_table", false);
@@ -124,8 +132,14 @@ public class UserServlet extends HttpServlet {
 
             String userName = request.getParameter("user_name");
 
+                if (role.equalsIgnoreCase("option 1")) {
+               newUser = new User(email, firstName, lastName, password, 1);
+        }
+        else if (role.equalsIgnoreCase("option 2")) {
+              newUser = new User(email, firstName, lastName, password, 2);
+        }
             try {
-                userService.update(newUser, "marcel");
+                userService.update(newUser, userName);
                 ArrayList<User> usersArray = userService.getAll(); // get users again to get the new user
                 request.setAttribute("users", usersArray); // send to users 
             } catch (Exception ex) {

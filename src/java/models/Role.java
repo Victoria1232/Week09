@@ -30,4 +30,8 @@ public class Role {
         return roleName;
     }
     
+    
+      public String toString() {
+        return this.roleName;
+    }
 }

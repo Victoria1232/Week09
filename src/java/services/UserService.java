@@ -40,10 +40,7 @@ public class UserService {
         USER_DB.update(user , firstName);
     }
 
-    public void delete(User user) throws Exception {
 
-        USER_DB.delete(user);
-    }
     
       public void delete(String userName) throws Exception {
 

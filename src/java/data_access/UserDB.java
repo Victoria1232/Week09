@@ -54,21 +54,21 @@ public class UserDB {
 
                
                 if (roleID == 1) {
-                    //roleName = "System Admin";
+                    roleName = "System Admin";
                     roleObj = new Role(1, roleName);
                    
 
                 } else if (roleID == 2) {
-                   // roleName = "Regular User";
+                    roleName = "Regular User";
                     roleObj = new Role(2, roleName);
                  
                 }
-
-
-           
               
+                 RoleService roleService = new RoleService();
+                 //roleService.insert(roleObj);
+                 
                  //User user = new User(email, firstName, lastName);
-                  User user = new User(email, firstName, lastName, password, roleID);
+                  User user = new User(email, firstName, lastName, password, roleObj);
                // User user = new User(email, firstName, lastName,  roles.get(index).getRoleName());
                // User user = new User(email, firstName, lastName, roles.get(index));
                 users.add(user);
@@ -83,39 +83,7 @@ public class UserDB {
         return users;
     }
 
-    public User get(int role) throws Exception {
-
-        User user = null;
-        ConnectionPool cp = ConnectionPool.getInstance();
-        Connection con = cp.getConnection();
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        String sql = "SELECT * FROM user WHERE role_id=?";
-
-        try {
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, role);
-            rs = ps.executeQuery();
-            if (rs.next()) {
-
-                String email = rs.getString(1);
-                String firstName = rs.getString(2);
-                String lastName = rs.getString(3);
-                //String roleName = rs.getString(4);
-                int roleName = rs.getInt(4);
-
-                //  user = new User(email, firstName, lastName, roleName);
-            }
-        } finally {
-
-            DBUtil.closePreparedStatement(ps);
-            DBUtil.closeResultSet(rs);
-            cp.freeConnection(con);
-        }
-
-        return user;
-    }
-    
+   
     
     public void insert(User user) throws Exception {
 

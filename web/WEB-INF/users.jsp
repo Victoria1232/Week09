@@ -25,9 +25,9 @@
                 <td> Email</td>
                 <td> First Name</td>
                 <td> Last Name</td>
-                <td> Role</td>
                 <td>Edit</td>
                 <td>Delete</td>
+                       <td> Role</td>
 
             </tr>
             <c:forEach items="${users}" var="user">
@@ -35,23 +35,27 @@
                     <td>${user.email}</td>
                     <td>${user.firstName}</td>
                     <td>${user.lastName}</td>
-                    
-                    
+
+
 
 <!--  <td><a href="/?action=edit&amp;user_name=${user.firstName}">edit</a></td> -->
                     <td><a href="/?action=edit_link&amp;users_email=${user.email}&amp;user_name=${user.firstName}">edit</a></td>
                     <td><a href="/?action=delete&amp;user_first_name=${user.firstName}&amp;user_last_name=${user.lastName}" >delete</a></td>
-                </tr>
+                    <c:forEach items="${roles}" var="role">
 
+                        <td>${role.roleName}</td>
+
+                    </c:forEach>
+
+                </tr>
             </c:forEach>
+
+
+
         </table>
 
         <br>
         <p>${message}</p>
-
-
-
-
 
 
         <c:choose>
@@ -67,8 +71,8 @@
                     Password:  <input type="text" name="password"><br>
 
                     <select name="roles">
-                        <option name="admin" value="1">System Admin</option>
-                        <option value="reg_user">Regular User</option>
+                        <option name="option1" value="System Admin">System Admin</option>
+                        <option name="option1" value="Regular User">Regular User</option>
                     </select><br>
                     <br>
 
@@ -89,8 +93,8 @@
                     Password:  <input type="text" name="password"><br>
 
                     <select name="roles">
-                        <option name="admin" value="1">System Admin</option>
-                        <option value="reg_user">Regular User</option>
+                        <option name="option1" value="System Admin">System Admin</option>
+                        <option name="option1" value="Regular User">Regular User</option>
                     </select><br>
                     <br>
 
