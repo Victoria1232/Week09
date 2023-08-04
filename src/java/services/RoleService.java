@@ -6,7 +6,7 @@
 package services;
 
 
-import data_access.ConnectionPool;
+
 import data_access.DBUtil;
 import data_access.RoleDB;
 import java.sql.Connection;
@@ -32,34 +32,21 @@ public class RoleService {
 
     public ArrayList<Role> getAll() throws Exception {
 
-        ArrayList<Role> roles = ROLE_DB.getAllRoles();
-        return roles;
+        //ArrayList<Role> roles = ROLE_DB.getAllRoles();
+       // return roles;
+       return null ;
     }
     
    public void delete(String userName) throws Exception {
 
-        ROLE_DB.delete(userName);
+       // ROLE_DB.delete(userName);
     }
    
    
      public void insert(Role role) throws Exception {
 
-        ConnectionPool cp = ConnectionPool.getInstance();
-        Connection con = cp.getConnection();
-        PreparedStatement ps = null;
-       //String sql = "INSERT INTO user (email, first_name, last_name , password) VALUES (?, ?, ?, ?)";
-       String sql = "INSERT INTO role (role_id, role_name) VALUES (?, ?)";
-
-        try {
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, role.getRoleID());
-            ps.setString(2, role.getRoleName());
-         
-    
-           ps.executeUpdate();
-        } finally {
-            DBUtil.closePreparedStatement(ps);
-            cp.freeConnection(con);
-        }
-    }
+  
+}
+     
+     
 }

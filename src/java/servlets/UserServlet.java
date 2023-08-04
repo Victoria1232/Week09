@@ -3,6 +3,7 @@ package servlets;
 import java.io.IOException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,8 +33,8 @@ public class UserServlet extends HttpServlet {
 
         /* GET ALL USERS  */
         try {
-            ArrayList<User> usersArray = userService.getAll();
-             ArrayList<Role> rolesArray = roleService.getAll();
+            List<User> usersArray = userService.getAll(2);
+          
 
             /* IF NULL THROW ERROR MSG */
             if (usersArray == null) {
@@ -43,7 +44,7 @@ public class UserServlet extends HttpServlet {
 
             /* OTHERWISE ADD ARRAY TO USERS IN JSP  */
             request.setAttribute("users", usersArray);
-            request.setAttribute("roles", rolesArray);
+            //request.setAttribute("roles", rolesArray);
 
         } catch (Exception ex) {
             Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex); // ???
@@ -65,10 +66,19 @@ public class UserServlet extends HttpServlet {
 
             String userFirstName = request.getParameter("user_first_name");
             String userLastName = request.getParameter("user_last_name");
+                       String userEmail = request.getParameter("user_email");
+                String roleID = request.getParameter("roleId");
+                  String roleName = request.getParameter("roleName");
+                  
+                  Role role = new Role(Integer.getInteger(roleName) ,roleName);
+                  User user = new User(userEmail, userFirstName, userLastName , "password");
+                 
             try {
-                userService.delete(userFirstName); // delete that user 
+                
+         
+                userService.delete(user, role); // delete that user 
              
-                ArrayList<User> usersArray = userService.getAll(); // get users again to get the updated table  
+                 List<User> usersArray = userService.getAll(2); // get users again to get the updated table  
                 request.setAttribute("users", usersArray); // send to users 
             } catch (Exception ex) {
                 Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -109,7 +119,7 @@ public class UserServlet extends HttpServlet {
             request.setAttribute("email", email);
 
             try {
-                ArrayList<User> usersArray = userService.getAll(); // get users again to get the new user
+                    List<User> usersArray = userService.getAll(2);// get users again to get the new user
                 request.setAttribute("users", usersArray); // send to users 
             } catch (Exception ex) {
                 Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -121,7 +131,7 @@ public class UserServlet extends HttpServlet {
         }
         /* CREATE USER  */
   
-         User newUser = new User(email, firstName, lastName, password, 2);
+         User newUser = new User(email, firstName, lastName, password);
          
         /* IF CANCEL BUTTON IS PRESSED  */
         if ("Cancel".equalsIgnoreCase(cancelButton)) {
@@ -133,14 +143,14 @@ public class UserServlet extends HttpServlet {
             String userName = request.getParameter("user_name");
 
                 if (role.equalsIgnoreCase("option 1")) {
-               newUser = new User(email, firstName, lastName, password, 1);
+               newUser = new User(email, firstName, lastName, password);
         }
         else if (role.equalsIgnoreCase("option 2")) {
-              newUser = new User(email, firstName, lastName, password, 2);
+              newUser = new User(email, firstName, lastName, password);
         }
             try {
-                userService.update(newUser, userName);
-                ArrayList<User> usersArray = userService.getAll(); // get users again to get the new user
+                userService.update(newUser);
+                   List<User> usersArray = userService.getAll(2); // get users again to get the new user
                 request.setAttribute("users", usersArray); // send to users 
             } catch (Exception ex) {
                 Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -154,8 +164,8 @@ public class UserServlet extends HttpServlet {
 
             /* OTHERWISE ADD USER TO TABLE  */
             try {
-                userService.insert(newUser);
-                ArrayList<User> usersArray = userService.getAll(); // get users again to get the new user
+                userService.insert(newUser.getRole() , newUser);
+                   List<User> usersArray = userService.getAll(2); // get users again to get the new user
                 request.setAttribute("users", usersArray); // send to users 
             } catch (Exception ex) {
                 Logger.getLogger(UserServlet.class.getName()).log(Level.SEVERE, null, ex);

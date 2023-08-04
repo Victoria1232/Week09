@@ -40,7 +40,7 @@
 
 <!--  <td><a href="/?action=edit&amp;user_name=${user.firstName}">edit</a></td> -->
                     <td><a href="/?action=edit_link&amp;users_email=${user.email}&amp;user_name=${user.firstName}">edit</a></td>
-                    <td><a href="/?action=delete&amp;user_first_name=${user.firstName}&amp;user_last_name=${user.lastName}" >delete</a></td>
+                    <td><a href="/?action=delete&amp;user_first_name=${user.firstName}&amp;user_last_name=${user.lastName}&amp;roleID=${user.role.roleId}&amp;roleName=${user.role.roleName}&amp;users_email=${user.email}" >delete</a></td>
                     <c:forEach items="${roles}" var="role">
 
                         <td>${role.roleName}</td>

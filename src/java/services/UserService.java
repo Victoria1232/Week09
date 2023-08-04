@@ -7,6 +7,8 @@ package services;
 
 import data_access.UserDB;
 import java.util.ArrayList;
+import java.util.List;
+import models.Role;
 
 import models.User;
 
@@ -22,28 +24,34 @@ public class UserService {
 
     }
 
-    public ArrayList<User> getAll() throws Exception {
+    public List<User> getAll(int roleID) throws Exception {
 
-        ArrayList<User> users = USER_DB.getAllUsers();
+        List<User> users = USER_DB.getAllUsers(roleID);
+        return users;
+    }
+    
+     public User get(int roleID) throws Exception {
+
+        User users = USER_DB.get(roleID);
         return users;
     }
 
-    public void insert(User user) throws Exception {
+    public void insert(Role role, User user) throws Exception {
 
-        USER_DB.insert(user);
+        USER_DB.insert(role, user);
     }
 
 
 
-    public void update(User user, String firstName) throws Exception {
+    public void update(User user) throws Exception {
 
-        USER_DB.update(user , firstName);
+        USER_DB.update(user );
     }
 
 
     
-      public void delete(String userName) throws Exception {
+      public void delete(User user, Role role) throws Exception {
 
-        USER_DB.delete(userName);
+        USER_DB.delete(user, role);
     }
 }
