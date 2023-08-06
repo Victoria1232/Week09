@@ -11,7 +11,7 @@ import javax.persistence.Persistence;
 
 /**
  *
- * @author mfgperez
+ * @author Victo
  */
 public class DBUtil {
     
